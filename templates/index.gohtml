@@ -5,13 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Chat Server</title>
+    <script src="https://unpkg.com/htmx.org@1.9.6"></script>
   </head>
   <body>
     <main>
         <h1>Chat Room</h1>  
         <ul id="messages">
-        {{range .Messages}}<li>{{.}}</li>{{end}}
+        {{range .Messages}}<li>{{.Text}}</li>{{end}}
         </ul>
+      <form hx-post="/messages" hx-swap="outerHTML">
+        <input type="text" name="message">
+        <button type="submit">Send</button>
+      </form>
     </main>
   </body>
 </html>

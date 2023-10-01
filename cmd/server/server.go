@@ -42,12 +42,15 @@ func main() {
 	}
 	e.Renderer = renderer
 
-	e.GET("/", endpoints.HandleIndex)
-
-	_, err := database.Connect()
+	database, err := database.Connect()
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
+
+	indexEndpoint := &endpoints.IndexEndpoint{Database: database}
+	messagesEndpoint := &endpoints.MessagesEndpoint{Database: database}
+	e.GET("/", indexEndpoint.HandleIndex)
+	e.POST("/messages", messagesEndpoint.HandlePost)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
