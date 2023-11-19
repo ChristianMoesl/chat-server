@@ -5,7 +5,7 @@ COPY . .
 
 RUN mkdir /app
 RUN go mod download \
-  && CGO_ENABLED=0 go build -ldflags "-s -w" -o /app/server cmd/server/server.go
+  && CGO_ENABLED=0 go build -ldflags "-s -w" -o /app/server
 
 RUN mkdir -p /app/database && cp -r ./database/migrations /app/database/migrations \
   && cp -r ./templates /app/templates
