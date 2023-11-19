@@ -43,13 +43,15 @@ func loadConfig(filenames ...string) (*DatabaseConfig, error) {
 		}
 	}
 
-	err := godotenv.Load(existingFiles...)
-	if err != nil {
-		return nil, fmt.Errorf("failed to load env: %w", err)
+	if len(existingFiles) != 0 {
+		err := godotenv.Load(existingFiles...)
+		if err != nil {
+			return nil, fmt.Errorf("failed to load env file: %w", err)
+		}
 	}
 
 	var config DatabaseConfig
-	err = envconfig.Process("", &config)
+	err := envconfig.Process("", &config)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load configuration for database: %w", err)
 	}
