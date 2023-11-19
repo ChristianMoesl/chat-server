@@ -6,12 +6,11 @@ import (
 	"log/slog"
 	"os"
 
+	"github.com/ChristianMoesl/chat-server/database"
+	"github.com/ChristianMoesl/chat-server/endpoints"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	slogecho "github.com/samber/slog-echo"
-
-	"github.com/ChristianMoesl/chat-server/database"
-	"github.com/ChristianMoesl/chat-server/endpoints"
 )
 
 // TemplateRenderer is a custom html/template renderer for Echo framework
@@ -52,7 +51,11 @@ func main() {
 	e.GET("/", indexEndpoint.HandleIndex)
 	e.POST("/messages", messagesEndpoint.HandlePost)
 
-	e.Logger.Fatal(e.Start(":8080"))
+	port, is_port_defined := os.LookupEnv("PORT")
+	if !is_port_defined {
+		port = "8080"
+	}
+	e.Logger.Fatal(e.Start(":" + port))
 }
 
 func createLogger() *slog.Logger {
